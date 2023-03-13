@@ -8,12 +8,14 @@ import compression from "compression";
 import helmet from "helmet";
 import morgan from "morgan";
 import moment from "moment";
+import router from "./routes";
 
 class App {
   public app: Application;
 
   constructor() {
     this.app = express();
+    this.plugins();
   }
 
   protected plugins(): void {
@@ -36,5 +38,9 @@ class App {
     this.app.use(express.urlencoded({ extended: true }));
   }
 
-  
+  protected routes(): void {
+    this.app.use(router);
+  }
 }
+
+export default new App().app;

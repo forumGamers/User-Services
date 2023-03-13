@@ -1,7 +1,10 @@
 import BaseRoutes from "./base";
+import AuthRoutes from "./auth";
 
-class router extends BaseRoutes {
-    public routes(): void {
-        this.router.use('/auth')
-    }
+class Router extends BaseRoutes {
+  public routes(): void {
+    this.router.use("/auth", AuthRoutes);
+  }
 }
+
+export default new Router().router;
