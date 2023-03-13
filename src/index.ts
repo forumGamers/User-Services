@@ -9,6 +9,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import moment from "moment";
 import router from "./routes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 class App {
   public app: Application;
@@ -16,6 +17,8 @@ class App {
   constructor() {
     this.app = express();
     this.plugins();
+    this.routes();
+    this.errorHandler();
   }
 
   protected plugins(): void {
@@ -40,6 +43,10 @@ class App {
 
   protected routes(): void {
     this.app.use(router);
+  }
+
+  protected errorHandler(): void {
+    this.app.use(errorHandler);
   }
 }
 

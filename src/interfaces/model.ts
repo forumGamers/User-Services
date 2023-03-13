@@ -50,3 +50,22 @@ export interface TopUpInstance {
   UserId: number;
   status: string;
 }
+
+export interface FollowingAttributes {
+  UserId?: number;
+  StoreId?: number | null;
+}
+
+export type FollowingCreationAttributes = Optional<
+  FollowingAttributes,
+  "UserId"
+>;
+
+export interface FollowingInstance {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+
+  UserId: number;
+  StoreId: number | null;
+}
