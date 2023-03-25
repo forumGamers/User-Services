@@ -48,7 +48,7 @@ export default class AuthController {
     try {
       const { fullName, username, email, password, phoneNumber } = req.body;
 
-      await User.create({
+      const data = await User.create({
         fullName,
         username,
         email,
@@ -57,7 +57,7 @@ export default class AuthController {
         role: "user",
       });
 
-      res.status(201).json({ message: "success register" });
+      res.status(201).json(data);
     } catch (err) {
       next(err);
     }

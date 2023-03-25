@@ -25,7 +25,7 @@ class UserRouter extends BaseRoutes {
         upload.single("image"),
         Controller.changeImg
       )
-      .get("/verify/:id", Controller.verify)
+      .patch("/verify", Controller.verify)
       .get("/:id", Controller.getUserById)
       .delete("/:id", authentication, authorize, Controller.deleteUser);
   }
