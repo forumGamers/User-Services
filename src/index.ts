@@ -23,7 +23,18 @@ class App {
 
   protected plugins(): void {
     this.app.use(helmet({ referrerPolicy: { policy: "same-origin" } }));
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        origin(requestOrigin, callback) {
+          const whiteList = process.env.CORSLIST as string;
+          if (whiteList.indexOf(requestOrigin as string) !== -1) {
+            callback(null, true);
+          } else {
+            callback(new Error(`Not allowed by CORS for URL ${requestOrigin}`));
+          }
+        },
+      })
+    );
     morgan.token("date", (req, res, tz: any) =>
       moment().utcOffset(tz).format()
     );

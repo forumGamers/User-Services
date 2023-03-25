@@ -3,6 +3,7 @@ import { UserInstance, UserAttributes } from "../interfaces/model";
 import { compare } from "../helpers/bcrypt";
 import { User, Following, TopUp } from "../models";
 import { imagekit } from "../helpers/imagekit";
+import { verifyToken } from "../helpers/jwt";
 const fs = require("fs");
 
 export default class UserController {
@@ -103,17 +104,19 @@ export default class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { id } = req.params;
+      const { token } = req.query;
+
+      const payload = verifyToken(token);
 
       const user: Promise<UserAttributes> | any = await User.findOne({
-        where: { id },
+        where: { id: payload.id },
       });
 
       if (!user) throw { name: "Data not found" };
 
       const isVerified: boolean = true;
 
-      await User.update({ isVerified }, { where: { id } });
+      await User.update({ isVerified }, { where: { id: payload.id } });
 
       res.status(201).json({ message: "verified" });
     } catch (err) {
