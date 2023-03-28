@@ -69,3 +69,17 @@ export interface FollowingInstance {
   UserId: number;
   StoreId: number | null;
 }
+
+export interface AchievementAttributes {
+  AchievementId?: string;
+  UserId: number;
+}
+
+export interface AchievementInstance {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+
+  AchievementId: string;
+  UserId: number;
+}

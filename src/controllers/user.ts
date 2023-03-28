@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { UserInstance, UserAttributes } from "../interfaces/model";
+import { UserAttributes } from "../interfaces/model";
 import { compare } from "../helpers/bcrypt";
-import { User, Following, TopUp } from "../models";
+import { User, Following, TopUp, Achievement } from "../models";
 import { imagekit } from "../helpers/imagekit";
 import { verifyToken } from "../helpers/jwt";
-const fs = require("fs");
+import fs from "fs";
 
 export default class UserController {
   public static async getUser(
@@ -224,7 +224,11 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: Following }, { model: TopUp }],
+        include: [
+          { model: Following },
+          { model: TopUp },
+          { model: Achievement },
+        ],
       });
 
       res.status(200).json(user);
