@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === "test") {
   );
 }
 
-let models = [User, Following, TopUp];
+let models = [User, Following, TopUp, Achievement];
 models.forEach((model) => model.initialize(sequelize));
 
 User.hasMany(Following, { foreignKey: "UserId" });
