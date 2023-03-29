@@ -35,7 +35,11 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: Following }, { model: TopUp }],
+        include: [
+          { model: Following },
+          { model: TopUp },
+          { model: Achievement },
+        ],
       });
 
       if (!user) throw { name: "Data not found" };
