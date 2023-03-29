@@ -4,7 +4,9 @@ import BaseRoutes from "./base";
 
 class AchievementRouter extends BaseRoutes {
   routes(): void {
-    this.router.post("/",authentication, Controller.addAchievment);
+    this.router
+      .post("/", authentication, Controller.addAchievment)
+      .get("/", authentication, Controller.getMyData);
   }
 }
 

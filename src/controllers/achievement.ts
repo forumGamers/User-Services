@@ -21,4 +21,26 @@ export default class Controller {
       next(err);
     }
   }
+
+  public static async getMyData(
+    req: Request | any,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { id } = req.user;
+
+      const data = await Achievement.findAll({
+        where: {
+          UserId: id,
+        },
+      });
+
+      if (data.length < 1) throw { message: "Data not found" };
+
+      res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
