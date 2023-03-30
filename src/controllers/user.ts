@@ -112,7 +112,7 @@ export default class UserController {
 
       const payload = verifyToken(token);
 
-      const user: Promise<UserAttributes> | any = await User.findOne({
+      const user = await User.findOne({
         where: { id: payload.id },
       });
 

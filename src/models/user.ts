@@ -29,7 +29,7 @@ export default class User extends Model<UserAttributes, any> {
   public username!: string;
   public email!: string;
   public password!: string;
-  public isVerified: boolean = false;
+  public isVerified!: boolean;
   public balance: number = 0;
   public imageUrl: string | null = null;
   public phoneNumber!: string;
