@@ -30,13 +30,13 @@ export default class User extends Model<UserAttributes, any> {
   public email!: string;
   public password!: string;
   public isVerified!: boolean;
-  public balance: number = 0;
-  public imageUrl: string | null = null;
+  public balance!: number;
+  public imageUrl?: string;
   public phoneNumber!: string;
-  public StoreId: number | null = null;
+  public StoreId?: number;
   public role!: string;
-  public point: number = 0;
-  public exp: number = 0;
+  public point!: number;
+  public exp!: number;
 
   //   class association methods
   public addFollowing!: HasManyAddAssociationMixin<typeof Following, number>;
@@ -145,7 +145,7 @@ export default class User extends Model<UserAttributes, any> {
           defaultValue: false,
         },
         balance: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.NUMBER,
           defaultValue: 0,
         },
         imageUrl: {
@@ -165,8 +165,7 @@ export default class User extends Model<UserAttributes, any> {
           },
         },
         StoreId: {
-          type: DataTypes.INTEGER,
-          defaultValue: null,
+          type: DataTypes.NUMBER,
         },
         role: {
           type: DataTypes.STRING,

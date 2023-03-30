@@ -161,13 +161,13 @@ export default class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { StoreId } = req.headers;
+      const { storeid } = req.headers;
 
       const { id } = req.user;
 
-      const user = await User.update({ StoreId }, { where: { id } });
+      const resp = await User.update({ StoreId: storeid }, { where: { id } });
 
-      if (!user) throw { name: "failed update" };
+      if (resp[0] === 0) throw { name: "failed update" };
 
       res.status(201).json({ message: "success create store" });
     } catch (err) {
