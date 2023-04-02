@@ -8,8 +8,17 @@ export default class Controller {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { achievement } = req.headers;
+      const { achievement } = req.params;
       const { id } = req?.user;
+
+      const data = await Achievement.findOne({
+        where: {
+          UserId: id,
+          AchievementId: achievement,
+        },
+      });
+
+      if (data) throw { name: "Data exist" };
 
       await Achievement.create({
         AchievementId: achievement,
