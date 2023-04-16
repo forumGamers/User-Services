@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { UserInstance, UserAttributes } from "../interfaces/model";
+import { UserAttributes } from "../interfaces/model";
 import { compare } from "../helpers/bcrypt";
-import { User, Following, TopUp } from "../models";
+import { User, Following, TopUp, Achievement } from "../models";
 import { imagekit } from "../helpers/imagekit";
 import { verifyToken } from "../helpers/jwt";
-const fs = require("fs");
+import fs from "fs";
 
 export default class UserController {
   public static async getUser(
@@ -35,7 +35,11 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: Following }, { model: TopUp }],
+        include: [
+          { model: Following },
+          { model: TopUp },
+          { model: Achievement },
+        ],
       });
 
       if (!user) throw { name: "Data not found" };
@@ -108,7 +112,7 @@ export default class UserController {
 
       const payload = verifyToken(token);
 
-      const user: Promise<UserAttributes> | any = await User.findOne({
+      const user = await User.findOne({
         where: { id: payload.id },
       });
 
@@ -157,13 +161,13 @@ export default class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { StoreId } = req.headers;
+      const { storeid } = req.headers;
 
       const { id } = req.user;
 
-      const user = await User.update({ StoreId }, { where: { id } });
+      const resp = await User.update({ StoreId: storeid }, { where: { id } });
 
-      if (!user) throw { name: "failed update" };
+      if (resp[0] === 0) throw { name: "failed update" };
 
       res.status(201).json({ message: "success create store" });
     } catch (err) {
@@ -224,7 +228,11 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: Following }, { model: TopUp }],
+        include: [
+          { model: Following },
+          { model: TopUp },
+          { model: Achievement },
+        ],
       });
 
       res.status(200).json(user);

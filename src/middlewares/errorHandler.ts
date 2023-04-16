@@ -54,6 +54,9 @@ export const errorHandler: ErrorRequestHandler = (
   } else if (err.name === "payment error") {
     status = 502;
     message = "Failed to pay";
+  } else if (err.name === "Error") {
+    status = 403;
+    message = err.message;
   }
   res.status(status).json({ message });
 };

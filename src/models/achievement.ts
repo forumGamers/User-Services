@@ -15,13 +15,13 @@ import {
 } from "sequelize";
 import User from "./user";
 
-export default class Following extends Model {
+export default class Achievement extends Model {
   public static associate(models: any) {
-    Following.belongsTo(models.User, { foreignKey: "UserId" });
+    Achievement.belongsTo(models.User, { foreignKey: "UserId" });
   }
 
+  public AchievementId!: string;
   public UserId!: number;
-  public StoreId!: number;
 
   public addUser!: BelongsToManyAddAssociationMixin<User, number>;
   public addUsers!: BelongsToManyAddAssociationsMixin<User, number>;
@@ -37,6 +37,10 @@ export default class Following extends Model {
   public static initialize(sequelize: Sequelize) {
     this.init(
       {
+        AchievementId: {
+          type: DataTypes.STRING,
+          allowNull:false
+        },
         UserId: {
           type: DataTypes.INTEGER,
           references: {
@@ -48,14 +52,10 @@ export default class Following extends Model {
           onDelete: "CASCADE",
           onUpdate: "CASCADE",
         },
-        StoreId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
       },
       {
         sequelize,
-        modelName: "Following",
+        modelName: "Achievement",
       }
     );
   }

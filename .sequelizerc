@@ -1,8 +1,10 @@
 const path = require("path");
 
 module.exports = {
-  "models-path": path.resolve("build", "models"),
+  "models-path": path.resolve("build", "models"), //kalau exec ke build | create ke src
   "seeders-path": path.resolve("build", "seeders"),
   "migrations-source-path": path.resolve("build", "migrations"),
   "migrations-compiled-path": path.resolve("build", "migrations"),
 };
+
+// npx sequelize-cli migration:create --name NewColumn --migrations-path src/migrations
