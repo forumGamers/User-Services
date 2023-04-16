@@ -30,6 +30,10 @@ export default class AuthController {
         fullName: (await user).fullName,
         isVerified: (await user).isVerified,
         phoneNumber: (await user).phoneNumber,
+        StoreId: (await user).StoreId,
+        role: (await user).role,
+        point: (await user).point,
+        exp: (await user).exp,
       };
 
       const access_token = createToken(payload);
