@@ -30,6 +30,10 @@ export default class AuthController {
         fullName: (await user).fullName,
         isVerified: (await user).isVerified,
         phoneNumber: (await user).phoneNumber,
+        StoreId: (await user).StoreId,
+        role: (await user).role,
+        point: (await user).point,
+        exp: (await user).exp,
       };
 
       const access_token = createToken(payload);
@@ -48,7 +52,7 @@ export default class AuthController {
     try {
       const { fullName, username, email, password, phoneNumber } = req.body;
 
-      await User.create({
+      const data = await User.create({
         fullName,
         username,
         email,
@@ -57,7 +61,7 @@ export default class AuthController {
         role: "user",
       });
 
-      res.status(201).json({ message: "success register" });
+      res.status(201).json(data);
     } catch (err) {
       next(err);
     }
