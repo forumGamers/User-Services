@@ -95,4 +95,22 @@ export default class AuthController {
       next(err);
     }
   }
+
+  public static async logout(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { access_token } = req.headers;
+
+      if (!access_token) throw { name: "Invalid token" };
+
+      await Token.destroy({ where: { access_token } });
+
+      res.status(201).json({ message: "success" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
