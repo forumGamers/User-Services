@@ -110,7 +110,7 @@ export default class UserController {
     try {
       const { token } = req.query;
 
-      const payload = verifyToken(token);
+      const payload = verifyToken(token as string);
 
       const user = await User.findOne({
         where: { id: payload.id },
