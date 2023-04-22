@@ -11,7 +11,7 @@ export = {
       },
 
       access_token: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
 
       UserId: {

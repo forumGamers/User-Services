@@ -28,7 +28,7 @@ export default class Achievement extends Model {
     this.init(
       {
         access_token: {
-          type: DataTypes.STRING,
+          type: DataTypes.TEXT,
           allowNull: false,
         },
         UserId: {

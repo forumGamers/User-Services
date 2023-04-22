@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { compare } from "../helpers/bcrypt";
-import { User } from "../models";
+import { User, Token } from "../models";
 import { UserAttributes } from "../interfaces/model";
 import { createToken } from "../helpers/jwt";
 
@@ -37,6 +37,12 @@ export default class AuthController {
       };
 
       const access_token = createToken(payload);
+
+      await Token.create({
+        access_token,
+        role: "User",
+        UserId: user.id,
+      });
 
       res.status(200).json({ access_token });
     } catch (err) {
