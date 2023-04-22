@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { User } from "../models";
+import { Token } from "../models";
 import { JwtPayload } from "jsonwebtoken";
 import { verifyToken } from "../helpers/jwt";
-import { UserAttributes } from "../interfaces/model";
 
 export const authentication = async (
   req: Request | any,
@@ -14,7 +13,13 @@ export const authentication = async (
 
     if (!access_token) throw { name: "invalid token" };
 
-    const payload: JwtPayload | any = verifyToken(access_token);
+    const token = await Token.findOne({
+      where: { access_token },
+    });
+
+    if (!token) throw { name: "invalid token" };
+
+    const payload: JwtPayload = verifyToken(token.access_token);
 
     const {
       id,
@@ -28,10 +33,6 @@ export const authentication = async (
       point,
       exp,
     } = payload;
-
-    const user: UserAttributes | any = await User.findOne({ where: { id } });
-
-    if (!user) throw { name: "invalid token" };
 
     req.user = {
       id,

@@ -4,8 +4,6 @@ import {
   DataTypes,
   BelongsToCreateAssociationMixin,
   BelongsToGetAssociationMixin,
-  BelongsToSetAssociationMixin,
-  BelongsToSetAssociationMixinOptions,
 } from "sequelize";
 import User from "./user";
 

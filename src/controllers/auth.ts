@@ -33,7 +33,7 @@ export default class AuthController {
         StoreId: (await user).StoreId,
         role: (await user).role,
         point: (await user).point,
-        exp: (await user).exp,
+        experience: (await user).exp,
       };
 
       const access_token = createToken(payload);
