@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { User } from "../models";
+import { Token } from "../models";
 import { JwtPayload } from "jsonwebtoken";
 import { verifyToken } from "../helpers/jwt";
-import { UserAttributes } from "../interfaces/model";
 
 export const authentication = async (
   req: Request | any,
@@ -14,13 +13,26 @@ export const authentication = async (
 
     if (!access_token) throw { name: "invalid token" };
 
-    const payload: JwtPayload | any = verifyToken(access_token);
+    const token = await Token.findOne({
+      where: { access_token },
+    });
 
-    const { id, email, username, fullName, isVerified, phoneNumber } = payload;
+    if (!token) throw { name: "invalid token" };
 
-    const user: UserAttributes | any = await User.findOne({ where: { id } });
+    const payload: JwtPayload = verifyToken(token.access_token);
 
-    if (!user) throw { name: "invalid token" };
+    const {
+      id,
+      email,
+      username,
+      fullName,
+      isVerified,
+      phoneNumber,
+      StoreId,
+      role,
+      point,
+      exp,
+    } = payload;
 
     req.user = {
       id,
@@ -28,6 +40,11 @@ export const authentication = async (
       username,
       fullName,
       isVerified,
+      phoneNumber,
+      StoreId,
+      role,
+      point,
+      exp,
     };
     next();
   } catch (err) {

@@ -83,3 +83,19 @@ export interface AchievementInstance {
   AchievementId: string;
   UserId: number;
 }
+
+export interface TokenAttributes {
+  access_token?: string;
+  UserId: number;
+  role: string;
+}
+
+export interface TokenInstance {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+
+  access_token: string;
+  UserId: number;
+  role: string;
+}
