@@ -16,7 +16,18 @@ export const authentication = async (
 
     const payload: JwtPayload | any = verifyToken(access_token);
 
-    const { id, email, username, fullName, isVerified, phoneNumber } = payload;
+    const {
+      id,
+      email,
+      username,
+      fullName,
+      isVerified,
+      phoneNumber,
+      StoreId,
+      role,
+      point,
+      exp,
+    } = payload;
 
     const user: UserAttributes | any = await User.findOne({ where: { id } });
 
@@ -28,6 +39,11 @@ export const authentication = async (
       username,
       fullName,
       isVerified,
+      phoneNumber,
+      StoreId,
+      role,
+      point,
+      exp,
     };
     next();
   } catch (err) {
