@@ -10,6 +10,7 @@ import morgan from "morgan";
 import moment from "moment";
 import router from "./routes";
 import { errorHandler } from "./middlewares/errorHandler";
+import Cron from "./cron";
 
 class App {
   public app: Application;
@@ -58,6 +59,10 @@ class App {
 
   protected errorHandler(): void {
     this.app.use(errorHandler);
+  }
+
+  protected cronJob(): void {
+    Cron.deleteToken();
   }
 }
 
