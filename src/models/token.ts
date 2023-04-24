@@ -7,9 +7,9 @@ import {
 } from "sequelize";
 import User from "./user";
 
-export default class Achievement extends Model {
+export default class Token extends Model {
   public static associate(models: any) {
-    Achievement.belongsTo(models.User, { foreignKey: "UserId" });
+    Token.belongsTo(models.User, { foreignKey: "UserId" });
   }
 
   public access_token!: string;

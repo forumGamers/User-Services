@@ -5,6 +5,7 @@ import User from "./user";
 import Following from "./following";
 import TopUp from "./topup";
 import Token from "./token";
+import Log from "./log";
 const config = require("../../config/config.json");
 let sequelize: Sequelize;
 import * as dotenv from "dotenv";
@@ -32,19 +33,23 @@ if (process.env.NODE_ENV === "test") {
   );
 }
 
-let models = [User, Following, TopUp, Token];
+let models = [User, Following, TopUp, Token, Log];
 models.forEach((model) => model.initialize(sequelize));
 
 User.hasMany(Following, { foreignKey: "UserId" });
 
 User.hasMany(TopUp, { foreignKey: "UserId" });
 
-User.hasOne(Token, { foreignKey: "UserId" });
+User.hasMany(Token, { foreignKey: "UserId" });
+
+User.hasMany(Log, { foreignKey: "UserId" });
 
 Following.belongsTo(User, { foreignKey: "UserId" });
 
 TopUp.belongsTo(User, { foreignKey: "UserId" });
 
 Token.belongsTo(User, { foreignKey: "UserId" });
+
+Log.belongsTo(User, { foreignKey: "UserId" });
 
 export { sequelize as Db, User, Following, TopUp, Token };

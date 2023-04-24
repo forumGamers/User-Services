@@ -22,6 +22,9 @@ import { hash } from "../helpers/bcrypt";
 export default class User extends Model<UserAttributes, any> {
   public static associate(models: any) {
     User.hasMany(models.Following, { foreignKey: "UserId" });
+    User.hasMany(models.Token, { foreignKey: "UserId" });
+    User.hasMany(models.TopUp, { foreignKey: "UserId" });
+    User.hasMany(models.Log, { foreignKey: "UserId" });
   }
 
   public id!: number;

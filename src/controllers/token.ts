@@ -26,4 +26,15 @@ export default class Controller {
       next(err);
     }
   }
+
+  public static async createTokenService(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+    } catch (err) {
+      next(err);
+    }
+  }
 }

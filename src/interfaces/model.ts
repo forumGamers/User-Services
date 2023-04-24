@@ -70,18 +70,26 @@ export interface FollowingInstance {
   StoreId: number | null;
 }
 
-export interface AchievementAttributes {
-  AchievementId?: string;
-  UserId: number;
+export interface LogAttributes {
+  path?: string;
+  UserId?: number;
+  method?: string;
+  statusCode?: number;
+  responseTime?: number;
+  origin?: string;
 }
 
-export interface AchievementInstance {
+export interface LogInstance {
   id: number;
   createdAt: Date;
   updatedAt: Date;
 
-  AchievementId: string;
+  path: string;
   UserId: number;
+  method: string;
+  statusCode: number;
+  responseTime: number;
+  origin: string;
 }
 
 export interface TokenAttributes {
