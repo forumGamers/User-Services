@@ -11,4 +11,4 @@ export const verifyServiceToken = (token: string): JwtPayload =>
   verify(token, SERVICE_SECRET) as JwtPayload;
 
 export const createServiceToken = (payload: object): string =>
-  sign(payload, SERVICE_SECRET, { expiresIn: "5s" });
+  sign(payload, SERVICE_SECRET, { expiresIn: "1m" });

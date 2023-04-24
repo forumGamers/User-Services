@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Token, User } from "../models";
+import GlobalHelper from "../helpers/global";
+import { createServiceToken } from "../helpers/jwt";
 
 export default class Controller {
   public static async getListLoggedIn(
@@ -28,11 +30,25 @@ export default class Controller {
   }
 
   public static async createTokenService(
-    req: Request,
+    req: Request | any,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+      const path = GlobalHelper.arrayInput(req.body.path);
+      const { origin } = req.headers;
+
+      if (!path.length || !origin) throw { name: "invalid input" };
+
+      const payload = {
+        ...req.user,
+        origin,
+        path,
+      };
+
+      const token = createServiceToken(payload);
+
+      res.status(200).json({ token });
     } catch (err) {
       next(err);
     }

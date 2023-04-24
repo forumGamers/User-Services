@@ -1,6 +1,5 @@
 import Controller from "../controllers/token";
 import { authentication } from "../middlewares/authentication";
-import { ServiceAuth } from "../middlewares/authenticationService";
 import { authorizeAdmin } from "../middlewares/authorizeAdmin";
 import BaseRoutes from "./base";
 
@@ -15,7 +14,7 @@ class TokenRouter extends BaseRoutes {
       )
       .post(
         "/create-service-token",
-        ServiceAuth,
+        authentication,
         Controller.createTokenService
       );
   }
