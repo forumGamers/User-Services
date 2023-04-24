@@ -4,7 +4,6 @@ import { Options, Sequelize } from "sequelize";
 import User from "./user";
 import Following from "./following";
 import TopUp from "./topup";
-import Achievement from "./achievement";
 import Token from "./token";
 const config = require("../../config/config.json");
 let sequelize: Sequelize;
@@ -33,14 +32,12 @@ if (process.env.NODE_ENV === "test") {
   );
 }
 
-let models = [User, Following, TopUp, Achievement, Token];
+let models = [User, Following, TopUp, Token];
 models.forEach((model) => model.initialize(sequelize));
 
 User.hasMany(Following, { foreignKey: "UserId" });
 
 User.hasMany(TopUp, { foreignKey: "UserId" });
-
-User.hasMany(Achievement, { foreignKey: "UserId" });
 
 User.hasOne(Token, { foreignKey: "UserId" });
 
@@ -48,15 +45,6 @@ Following.belongsTo(User, { foreignKey: "UserId" });
 
 TopUp.belongsTo(User, { foreignKey: "UserId" });
 
-Achievement.belongsTo(User, { foreignKey: "UserId" });
-
 Token.belongsTo(User, { foreignKey: "UserId" });
 
-export { 
-  sequelize as Db,
-  User, 
-  Following, 
-  TopUp, 
-  Achievement, 
-  Token 
-};
+export { sequelize as Db, User, Following, TopUp, Token };

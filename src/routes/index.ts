@@ -3,7 +3,6 @@ import AuthRoutes from "./auth";
 import UserRoutes from "./user";
 import FollowingRoutes from "./following";
 import TopupRoutes from "./topup";
-import AchievementRoutes from "./achievement";
 import TokenRoutes from "./token";
 
 class Router extends BaseRoutes {
@@ -13,7 +12,6 @@ class Router extends BaseRoutes {
       .use("/auth", AuthRoutes)
       .use("/following", FollowingRoutes)
       .use("/topup", TopupRoutes)
-      .use("/achievement", AchievementRoutes)
       .use("/token", TokenRoutes);
   }
 }
