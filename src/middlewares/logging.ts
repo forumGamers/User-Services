@@ -9,7 +9,7 @@ export const logging = (
   res.on("finish", async () => {
     await Log.create({
       path: req.originalUrl,
-      UserId: req.user.id || 0,
+      UserId: req?.user?.id,
       method: req.method,
       statusCode: res.statusCode,
       origin: req.headers.origin,
