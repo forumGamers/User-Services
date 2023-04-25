@@ -22,4 +22,15 @@ export default class LogService {
       return GlobalHelper.errorService(err);
     }
   }
+
+  public static async createMany(
+    input: LogAttributes[]
+  ): Promise<serviceResponse> {
+    try {
+      await Log.bulkCreate(input as any);
+      return GlobalHelper.successService("success");
+    } catch (err) {
+      return GlobalHelper.errorService(err);
+    }
+  }
 }

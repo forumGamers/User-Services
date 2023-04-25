@@ -4,7 +4,9 @@ import BaseRoutes from "./base";
 
 class LogRoutes extends BaseRoutes {
   routes(): void {
-    this.router.post("/", authentication, Controller.createLog);
+    this.router
+      .post("/", authentication, Controller.createLog)
+      .post("/many", authentication, Controller.createManyLogs);
   }
 }
 
