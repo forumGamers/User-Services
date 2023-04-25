@@ -5,7 +5,7 @@ import { upload } from "../middlewares/multer";
 import BaseRoutes from "./base";
 
 class UserRouter extends BaseRoutes {
-  public routes(): void {
+  routes(): void {
     this.router
       .get("/", Controller.getUser)
       .get("/myData", authentication, Controller.getMyData)

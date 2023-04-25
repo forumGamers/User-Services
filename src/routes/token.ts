@@ -4,7 +4,7 @@ import { authorizeAdmin } from "../middlewares/authorizeAdmin";
 import BaseRoutes from "./base";
 
 class TokenRouter extends BaseRoutes {
-  public routes(): void {
+  routes(): void {
     this.router
       .get(
         "/get-list",

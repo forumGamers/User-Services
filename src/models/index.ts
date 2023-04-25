@@ -52,4 +52,4 @@ Token.belongsTo(User, { foreignKey: "UserId" });
 
 Log.belongsTo(User, { foreignKey: "UserId" });
 
-export { sequelize as Db, User, Following, TopUp, Token };
+export { sequelize as Db, User, Following, TopUp, Token, Log };

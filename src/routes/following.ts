@@ -2,7 +2,7 @@ import FollowingController from "../controllers/following";
 import BaseRoutes from "./base";
 import { authentication } from "../middlewares/authentication";
 class FollowingRouter extends BaseRoutes {
-  public routes(): void {
+  routes(): void {
     this.router
       .get("/", FollowingController.getAllData)
       .get("/myFollow", authentication, FollowingController.getMyData)
