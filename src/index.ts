@@ -11,6 +11,8 @@ import moment from "moment";
 import router from "./routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import Cron from "./cron";
+import responseTime from "response-time";
+import { logging } from "./middlewares/logging";
 
 class App {
   public app: Application;
@@ -18,6 +20,7 @@ class App {
   constructor() {
     this.app = express();
     this.plugins();
+    this.logger();
     this.routes();
     this.errorHandler();
   }
@@ -51,6 +54,11 @@ class App {
     this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(responseTime());
+  }
+
+  protected logger(): void {
+    this.app.use(logging);
   }
 
   protected routes(): void {
