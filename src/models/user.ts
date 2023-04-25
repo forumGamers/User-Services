@@ -18,6 +18,7 @@ import Following from "./following";
 import TopUp from "./topup";
 import { UserAttributes } from "../interfaces/model";
 import { hash } from "../helpers/bcrypt";
+import { v4 } from "uuid";
 
 export default class User extends Model<UserAttributes, any> {
   public static associate(models: any) {
@@ -40,6 +41,7 @@ export default class User extends Model<UserAttributes, any> {
   public role!: string;
   public point!: number;
   public exp!: number;
+  public UUID!: string;
 
   //   class association methods
   public addFollowing!: HasManyAddAssociationMixin<typeof Following, number>;
@@ -181,6 +183,14 @@ export default class User extends Model<UserAttributes, any> {
           type: DataTypes.NUMBER,
           defaultValue: 0,
         },
+        UUID: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          unique: {
+            name: "UUID is unique",
+            msg: "UUID is unique",
+          },
+        },
       },
       {
         sequelize,
@@ -193,6 +203,7 @@ export default class User extends Model<UserAttributes, any> {
             } else if (user.role === "admin") {
               user.isVerified = true;
             }
+            user.UUID = v4();
           },
           beforeUpdate: (user: User, Options: any): HookReturn => {
             user.password = hash(user.password);

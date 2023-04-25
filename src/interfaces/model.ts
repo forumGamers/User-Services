@@ -14,6 +14,7 @@ export interface UserAttributes {
   role?: string;
   point: number;
   exp: number;
+  UUID: string;
 }
 
 export interface UserInstance {
@@ -33,6 +34,7 @@ export interface UserInstance {
   role: string;
   point: number;
   exp: number;
+  UUID: string;
 }
 
 export interface TopUpAttributes {
