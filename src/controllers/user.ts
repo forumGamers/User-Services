@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { UserAttributes } from "../interfaces/model";
 import { compare } from "../helpers/bcrypt";
-import { User, Following, TopUp } from "../models";
+import { User, FollowingStore, TopUp } from "../models";
 import { imagekit } from "../helpers/imagekit";
 import { verifyToken } from "../helpers/jwt";
 import fs from "fs";
@@ -14,7 +14,7 @@ export default class UserController {
   ): Promise<void> {
     try {
       const users: Promise<UserAttributes[]> | any = await User.findAll({
-        include: [{ model: Following }, { model: TopUp }],
+        include: [{ model: FollowingStore }, { model: TopUp }],
       });
 
       if (!users || (await users).length < 1) throw { name: "Data not found" };
@@ -35,7 +35,7 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: Following }, { model: TopUp }],
+        include: [{ model: FollowingStore }, { model: TopUp }],
       });
 
       if (!user) throw { name: "Data not found" };
@@ -224,7 +224,7 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: Following }, { model: TopUp }],
+        include: [{ model: FollowingStore }, { model: TopUp }],
       });
 
       res.status(200).json(user);

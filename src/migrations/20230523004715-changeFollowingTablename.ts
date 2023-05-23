@@ -2,11 +2,9 @@ import { QueryInterface } from "sequelize";
 
 export = {
   up: (queryInterface: QueryInterface, Sequelize: any) => {
-    return queryInterface.removeColumn("Followings", "StoreId");
+    return queryInterface.renameTable("Followings", "FollowingStores");
   },
   down: (queryInterface: QueryInterface, Sequelize: any) => {
-    return queryInterface.addColumn("Followings", "StoreId", {
-      type: Sequelize.INTEGER,
-    });
+    return queryInterface.renameTable("FollowingStores", "Followings");
   },
 };

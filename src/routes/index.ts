@@ -1,7 +1,7 @@
 import BaseRoutes from "./base";
 import AuthRoutes from "./auth";
 import UserRoutes from "./user";
-import FollowingRoutes from "./following";
+import FollowingStoreRoutes from "./followingStore";
 import TopupRoutes from "./topup";
 import TokenRoutes from "./token";
 import { queryFilter } from "../middlewares/queryFilter";
@@ -12,7 +12,7 @@ class Router extends BaseRoutes {
       .use(queryFilter)
       .use("/users", UserRoutes)
       .use("/auth", AuthRoutes)
-      .use("/following", FollowingRoutes)
+      .use("/following-store", FollowingStoreRoutes)
       .use("/topup", TopupRoutes)
       .use("/token", TokenRoutes);
   }

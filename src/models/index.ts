@@ -2,7 +2,8 @@
 
 import { Options, Sequelize } from "sequelize";
 import User from "./user";
-import Following from "./following";
+import FollowingStore from "./followingStore";
+import FollowingUser from "./followinguser";
 import TopUp from "./topup";
 import Token from "./token";
 import Log from "./log";
@@ -33,10 +34,10 @@ if (process.env.NODE_ENV === "test") {
   );
 }
 
-let models = [User, Following, TopUp, Token, Log];
+let models = [User, FollowingStore, FollowingUser, TopUp, Token, Log];
 models.forEach((model) => model.initialize(sequelize));
 
-User.hasMany(Following, { foreignKey: "UserId" });
+User.hasMany(FollowingStore, { foreignKey: "UserId" });
 
 User.hasMany(TopUp, { foreignKey: "UserId" });
 
@@ -44,7 +45,19 @@ User.hasMany(Token, { foreignKey: "UserId" });
 
 User.hasMany(Log, { foreignKey: "UserId" });
 
-Following.belongsTo(User, { foreignKey: "UserId" });
+User.belongsToMany(User, {
+  foreignKey: "UserId",
+  through: "FollowingUser",
+  as: "followers",
+});
+
+User.belongsToMany(User, {
+  foreignKey: "FollowedUser",
+  through: "FollowingUser",
+  as: "following",
+});
+
+FollowingStore.belongsTo(User, { foreignKey: "UserId" });
 
 TopUp.belongsTo(User, { foreignKey: "UserId" });
 
@@ -52,4 +65,12 @@ Token.belongsTo(User, { foreignKey: "UserId" });
 
 Log.belongsTo(User, { foreignKey: "UserId" });
 
-export { sequelize as Db, User, Following, TopUp, Token, Log };
+export {
+  sequelize as Db,
+  User,
+  FollowingStore,
+  FollowingUser,
+  TopUp,
+  Token,
+  Log,
+};

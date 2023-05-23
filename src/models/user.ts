@@ -14,7 +14,7 @@ import {
   HasManySetAssociationsMixin,
 } from "sequelize";
 import { HookReturn } from "sequelize/types/hooks";
-import Following from "./following";
+import FollowingStore from "./followingStore";
 import TopUp from "./topup";
 import { UserAttributes } from "../interfaces/model";
 import { hash } from "../helpers/bcrypt";
@@ -22,7 +22,7 @@ import { v4 } from "uuid";
 
 export default class User extends Model<UserAttributes, any> {
   public static associate(models: any) {
-    User.hasMany(models.Following, { foreignKey: "UserId" });
+    User.hasMany(models.FollowingStore, { foreignKey: "UserId" });
     User.hasMany(models.Token, { foreignKey: "UserId" });
     User.hasMany(models.TopUp, { foreignKey: "UserId" });
     User.hasMany(models.Log, { foreignKey: "UserId" });
@@ -44,22 +44,37 @@ export default class User extends Model<UserAttributes, any> {
   public UUID!: string;
 
   //   class association methods
-  public addFollowing!: HasManyAddAssociationMixin<typeof Following, number>;
-  public addFollowings!: HasManyAddAssociationsMixin<typeof Following, number>;
+  public addFollowing!: HasManyAddAssociationMixin<
+    typeof FollowingStore,
+    number
+  >;
+  public addFollowings!: HasManyAddAssociationsMixin<
+    typeof FollowingStore,
+    number
+  >;
   public countFollowings!: HasManyCountAssociationsMixin;
-  public createFollowings!: HasManyCreateAssociationMixin<Following>;
-  public getFollowings!: HasManyGetAssociationsMixin<typeof Following>;
-  public hasFollowing!: HasManyHasAssociationMixin<typeof Following, number>;
-  public hasFollowings!: HasManyHasAssociationsMixin<typeof Following, number>;
+  public createFollowings!: HasManyCreateAssociationMixin<FollowingStore>;
+  public getFollowings!: HasManyGetAssociationsMixin<typeof FollowingStore>;
+  public hasFollowing!: HasManyHasAssociationMixin<
+    typeof FollowingStore,
+    number
+  >;
+  public hasFollowings!: HasManyHasAssociationsMixin<
+    typeof FollowingStore,
+    number
+  >;
   public removeFollowing!: HasManyRemoveAssociationMixin<
-    typeof Following,
+    typeof FollowingStore,
     number
   >;
   public removeFollowings!: HasManyRemoveAssociationsMixin<
-    typeof Following,
+    typeof FollowingStore,
     number
   >;
-  public setFollowings!: HasManySetAssociationsMixin<typeof Following, number>;
+  public setFollowings!: HasManySetAssociationsMixin<
+    typeof FollowingStore,
+    number
+  >;
 
   //class association methods for TopUp
   public addTopUp!: HasManyAddAssociationMixin<typeof TopUp, number>;
