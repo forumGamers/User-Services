@@ -135,6 +135,12 @@ export default class AuthController {
 
       const token = createToken(payload);
 
+      await Token.create({
+        access_token: token,
+        UserId: user.id,
+        role: "user",
+      });
+
       res.status(200).json(token);
     } catch (err) {
       next(err);
@@ -149,6 +155,8 @@ export default class AuthController {
     try {
       const { id } = req.user;
 
+      const { access_token } = req.headers;
+
       const { password, confirmPassword } = req.body;
 
       if (password !== confirmPassword)
@@ -158,6 +166,8 @@ export default class AuthController {
         };
 
       await User.update({ password }, { where: { id } });
+
+      await Token.destroy({ where: { access_token } });
 
       res.status(201).json({ message: "success" });
     } catch (err) {

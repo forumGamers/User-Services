@@ -1,4 +1,5 @@
 import Controller from "../controllers/auth";
+import { authentication } from "../middlewares/authentication";
 import { authorizeAdmin } from "../middlewares/authorizeAdmin";
 import BaseRoutes from "./base";
 
@@ -9,7 +10,7 @@ class AuthRoutes extends BaseRoutes {
       .post("/register/admin", authorizeAdmin, Controller.registerNewAdmin)
       .post("/login", Controller.login)
       .post("/reset-password", Controller.getResetPasswordToken)
-      .patch('/change-forget-pass')
+      .patch("/change-forget-pass", authentication, Controller.ChangeForgetPass)
       .patch("/logout", Controller.logout);
   }
 }
