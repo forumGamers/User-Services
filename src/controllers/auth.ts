@@ -113,4 +113,55 @@ export default class AuthController {
       next(err);
     }
   }
+
+  public static async getResetPasswordToken(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      const user = await User.findOne({ where: { email } });
+
+      if (!user) throw { name: "Data not found" };
+
+      const payload = {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        fullName: user.fullName,
+      };
+
+      const token = createToken(payload);
+
+      res.status(200).json(token);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async ChangeForgetPass(
+    req: Request | any,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { id } = req.user;
+
+      const { password, confirmPassword } = req.body;
+
+      if (password !== confirmPassword)
+        throw {
+          name: "Bad Request",
+          msg: "Password must same as confirm password",
+        };
+
+      await User.update({ password }, { where: { id } });
+
+      res.status(201).json({ message: "success" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }

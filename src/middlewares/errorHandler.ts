@@ -57,6 +57,9 @@ export const errorHandler: ErrorRequestHandler = (
   } else if (err.name === "Error") {
     status = 403;
     message = err.message;
+  } else if (err.name === "Bad Request") {
+    status = 400;
+    message = err.msg;
   }
   res.status(status).json({ message });
 };
