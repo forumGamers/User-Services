@@ -9,6 +9,7 @@ class AuthRoutes extends BaseRoutes {
       .post("/register", Controller.register)
       .post("/register/admin", authorizeAdmin, Controller.registerNewAdmin)
       .post("/login", Controller.login)
+      .post("/google-login", Controller.googleLogin)
       .post("/reset-password", Controller.getResetPasswordToken)
       .patch("/change-forget-pass", authentication, Controller.ChangeForgetPass)
       .patch("/logout", Controller.logout);

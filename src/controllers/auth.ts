@@ -3,6 +3,7 @@ import { compare } from "../helpers/bcrypt";
 import { User, Token } from "../models";
 import { UserAttributes } from "../interfaces/model";
 import { createToken } from "../helpers/jwt";
+import { OAuth2Client, TokenPayload } from "google-auth-library";
 
 export default class AuthController {
   public static async login(
@@ -34,9 +35,71 @@ export default class AuthController {
         role: (await user).role,
         point: (await user).point,
         experience: (await user).exp,
+        image: (await user).imageUrl,
       };
 
       const access_token = createToken(payload);
+
+      await Token.create({
+        access_token,
+        role: "User",
+        UserId: user.id,
+      });
+
+      res.status(200).json({ access_token });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async googleLogin(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { google_token } = req.headers;
+
+      const client = new OAuth2Client(
+        process.env.GOOGLE_OAUTH_CLIENTID,
+        process.env.GOOGLE_OAUTH_CLIENT_SECRET
+      );
+
+      const ticket = await client.verifyIdToken({
+        idToken: google_token as string,
+        audience: process.env.GOOGLE_OAUTH_CLIENTID,
+      });
+
+      const payload = ticket.getPayload() as TokenPayload;
+
+      const { given_name, family_name, email } = payload;
+
+      const [user] = await User.findOrCreate({
+        where: { email },
+        defaults: {
+          email,
+          password: "OAUTH LOGIN",
+          username: family_name ? `${given_name} ${family_name}` : given_name,
+          fullName: family_name ? `${given_name} ${family_name}` : given_name,
+          isVerified: true,
+          phoneNumber: "000000000000",
+        },
+        hooks: false,
+      });
+
+      const access_token = createToken({
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        fullName: user.fullName,
+        isVerified: user.isVerified,
+        phoneNumber: user.phoneNumber,
+        StoreId: user.StoreId,
+        role: user.role,
+        point: user.point,
+        experience: user.exp,
+        image: user.imageUrl,
+      });
 
       await Token.create({
         access_token,
