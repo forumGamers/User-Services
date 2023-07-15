@@ -9,16 +9,12 @@ export const queryFilter = (
   try {
     const { query } = req;
 
-    for (const key in query) {
-      if (
-        !key.toLowerCase().includes("password") &&
-        Encryption.validateChar(query[key] as string)
-      )
-        throw {
-          name: "invalid input",
-          msg: `${key} is not allowed contains symbol`,
-        };
-    }
+    const filteredQuery: any = {};
+
+    for (const key in query)
+      filteredQuery[key] = Encryption.filterQuery(query[key] as string);
+
+    req.query = filteredQuery;
 
     next();
   } catch (err) {

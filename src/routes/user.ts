@@ -26,6 +26,7 @@ class UserRouter extends BaseRoutes {
         Controller.changeImg
       )
       .patch("/verify", Controller.verify)
+      .get("/multiple", Controller.GetMultipleUserById)
       .get("/:id", Controller.getUserById)
       .delete("/:id", authentication, authorize, Controller.deleteUser);
   }

@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { UserAttributes } from "../interfaces/model";
 import { compare } from "../helpers/bcrypt";
-import { User, FollowingStore, TopUp } from "../models";
+import { User, FollowingStore, TopUp, Db } from "../models";
+import { QueryTypes } from "sequelize";
 import { imagekit } from "../helpers/imagekit";
 import { verifyToken } from "../helpers/jwt";
 import fs from "fs";
@@ -258,6 +259,46 @@ export default class UserController {
       if (resp[0] === 0) throw { name: "invalid input", msg: "Error Upload" };
 
       res.status(201).json({ message: "success change image" });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public static async GetMultipleUserById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const id = req.query.id as string;
+
+      if (!id) throw { name: "Bad Request", msg: "query id is required" };
+
+      if (!id.includes(","))
+        throw { name: "Bad Request", msg: "Invalid format" };
+
+      const data = id
+        .replace(/\./g, ",")
+        .split(",")
+        .map(Number)
+        .filter((el: number | null) => !isNaN(el as number));
+
+      if (data.length > 25) throw { name: "Data limit exceeded" };
+
+      const placeHolder = data
+        .map((_: number, idx: number) => `$${idx + 1}`)
+        .join(", ");
+
+      const query = `SELECT u."username" ,u."imageUrl" ,u."id" ,u."UUID" FROM "Users" u WHERE u.id IN (${placeHolder})`;
+
+      const users = await Db.query(query, {
+        type: QueryTypes.SELECT,
+        bind: data,
+      });
+
+      if (!users.length) throw { name: "Data not found" };
+
+      res.status(200).json(users);
     } catch (err) {
       next(err);
     }

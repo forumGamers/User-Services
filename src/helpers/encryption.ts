@@ -31,4 +31,8 @@ export default class Encryption {
   public static validateChar(data: string) {
     return /[^a-zA-Z0-9.:,\-\s@]/g.test(data) ? true : false;
   }
+
+  public static filterQuery(query: string): string {
+    return query.replace(/[^a-zA-Z0-9.,:_*\-\s@]/g, "");
+  }
 }

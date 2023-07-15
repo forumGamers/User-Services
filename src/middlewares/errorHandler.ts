@@ -60,6 +60,9 @@ export const errorHandler: ErrorRequestHandler = (
   } else if (err.name === "Bad Request") {
     status = 400;
     message = err.msg;
+  } else if (err.name === "Data limit exceeded") {
+    status = 413;
+    message = err.name;
   }
   res.status(status).json({ message });
 };
