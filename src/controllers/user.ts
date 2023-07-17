@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { UserAttributes } from "../interfaces/model";
 import { compare } from "../helpers/bcrypt";
-import { User, FollowingStore, TopUp, Db } from "../models";
-import { QueryTypes } from "sequelize";
+import { User, FollowingStore, Db } from "../models";
 import { imagekit } from "../helpers/imagekit";
 import { verifyToken } from "../helpers/jwt";
 import fs from "fs";
+import UserService from "../services/user";
 
 export default class UserController {
   public static async getUser(
@@ -15,7 +15,7 @@ export default class UserController {
   ): Promise<void> {
     try {
       const users: Promise<UserAttributes[]> | any = await User.findAll({
-        include: [{ model: FollowingStore }, { model: TopUp }],
+        include: [{ model: FollowingStore }],
       });
 
       if (!users || (await users).length < 1) throw { name: "Data not found" };
@@ -36,7 +36,7 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: FollowingStore }, { model: TopUp }],
+        include: [{ model: FollowingStore }],
       });
 
       if (!user) throw { name: "Data not found" };
@@ -225,7 +225,7 @@ export default class UserController {
 
       const user: Promise<UserAttributes> | any = await User.findOne({
         where: { id },
-        include: [{ model: FollowingStore }, { model: TopUp }],
+        include: [{ model: FollowingStore }],
       });
 
       res.status(200).json(user);
@@ -285,16 +285,7 @@ export default class UserController {
 
       if (data.length > 25) throw { name: "Data limit exceeded" };
 
-      const placeHolder = data
-        .map((_: number, idx: number) => `$${idx + 1}`)
-        .join(", ");
-
-      const query = `SELECT u."username" ,u."imageUrl" ,u."id" ,u."UUID" FROM "Users" u WHERE u.id IN (${placeHolder})`;
-
-      const users = await Db.query(query, {
-        type: QueryTypes.SELECT,
-        bind: data,
-      });
+      const users = await UserService.getMultipleUser(data);
 
       if (!users.length) throw { name: "Data not found" };
 

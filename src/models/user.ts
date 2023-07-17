@@ -15,7 +15,6 @@ import {
 } from "sequelize";
 import { HookReturn } from "sequelize/types/hooks";
 import FollowingStore from "./followingStore";
-import TopUp from "./topup";
 import { UserAttributes } from "../interfaces/model";
 import { hash } from "../helpers/bcrypt";
 import { v4 } from "uuid";
@@ -24,7 +23,6 @@ export default class User extends Model<UserAttributes, any> {
   public static associate(models: any) {
     User.hasMany(models.FollowingStore, { foreignKey: "UserId" });
     User.hasMany(models.Token, { foreignKey: "UserId" });
-    User.hasMany(models.TopUp, { foreignKey: "UserId" });
     User.hasMany(models.Log, { foreignKey: "UserId" });
   }
 
@@ -75,18 +73,6 @@ export default class User extends Model<UserAttributes, any> {
     typeof FollowingStore,
     number
   >;
-
-  //class association methods for TopUp
-  public addTopUp!: HasManyAddAssociationMixin<typeof TopUp, number>;
-  public addTopUps!: HasManyAddAssociationsMixin<typeof TopUp, number>;
-  public countTopUps!: HasManyCountAssociationsMixin;
-  public createTopUp!: HasManyCreateAssociationMixin<TopUp>;
-  public getTopUps!: HasManyGetAssociationsMixin<typeof TopUp>;
-  public hasTopUp!: HasManyHasAssociationMixin<typeof TopUp, number>;
-  public hasTopUps!: HasManyHasAssociationsMixin<typeof TopUp, number>;
-  public removeTopUp!: HasManyRemoveAssociationMixin<typeof TopUp, number>;
-  public removeTopUps!: HasManyRemoveAssociationsMixin<typeof TopUp, number>;
-  public setTopUps!: HasManySetAssociationsMixin<typeof TopUp, number>;
 
   public static initialize(sequelize: Sequelize) {
     this.init(

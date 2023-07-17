@@ -4,7 +4,6 @@ import { Options, Sequelize } from "sequelize";
 import User from "./user";
 import FollowingStore from "./followingStore";
 import FollowingUser from "./followinguser";
-import TopUp from "./topup";
 import Token from "./token";
 import Log from "./log";
 const config = require("../../config/config.json");
@@ -34,12 +33,10 @@ if (process.env.NODE_ENV === "test") {
   );
 }
 
-let models = [User, FollowingStore, FollowingUser, TopUp, Token, Log];
+let models = [User, FollowingStore, FollowingUser, Token, Log];
 models.forEach((model) => model.initialize(sequelize));
 
 User.hasMany(FollowingStore, { foreignKey: "UserId" });
-
-User.hasMany(TopUp, { foreignKey: "UserId" });
 
 User.hasMany(Token, { foreignKey: "UserId" });
 
@@ -59,8 +56,6 @@ User.belongsToMany(User, {
 
 FollowingStore.belongsTo(User, { foreignKey: "UserId" });
 
-TopUp.belongsTo(User, { foreignKey: "UserId" });
-
 Token.belongsTo(User, { foreignKey: "UserId" });
 
 Log.belongsTo(User, { foreignKey: "UserId" });
@@ -70,7 +65,6 @@ export {
   User,
   FollowingStore,
   FollowingUser,
-  TopUp,
   Token,
   Log,
 };
