@@ -4,6 +4,7 @@ export = {
   up: (queryInterface: QueryInterface, Sequelize: any) => {
     return queryInterface.addIndex("Users", ["email"], {
       unique: true,
+      type: "UNIQUE",
     });
   },
   down: (queryInterface: QueryInterface, Sequelize: any) => {

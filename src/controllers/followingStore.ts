@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { FollowingStore } from "../models";
+import { requestUser } from "../interfaces/user";
 
 export default class FollowingStoreController {
   public static async CountStoreFollower(
@@ -25,14 +26,14 @@ export default class FollowingStoreController {
   }
 
   public static async FollowStore(
-    req: Request | any,
+    req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const { storeId } = req.params;
 
-      const { id } = req.user;
+      const { id } = req.user as requestUser;
 
       const data = await FollowingStore.findOne({
         where: {

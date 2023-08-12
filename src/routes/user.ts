@@ -2,6 +2,7 @@ import Controller from "../controllers/user";
 import { authentication } from "../middlewares/authentication";
 import { authorize } from "../middlewares/authorize";
 import { upload } from "../middlewares/multer";
+import publicAuthentication from "../middlewares/publicAuthentication";
 import BaseRoutes from "./base";
 
 class UserRouter extends BaseRoutes {
@@ -26,7 +27,7 @@ class UserRouter extends BaseRoutes {
         Controller.changeImg
       )
       .patch("/verify", Controller.verify)
-      .get("/multiple", Controller.GetMultipleUserById)
+      .get("/multiple", publicAuthentication, Controller.GetMultipleUserById)
       .get("/:id", Controller.getUserById)
       .delete("/:id", authentication, authorize, Controller.deleteUser);
   }

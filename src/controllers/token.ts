@@ -30,7 +30,7 @@ export default class Controller {
   }
 
   public static async createTokenService(
-    req: Request | any,
+    req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {

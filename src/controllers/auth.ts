@@ -28,9 +28,7 @@ export default class AuthController {
         id: (await user).id,
         email: (await user).email,
         username: (await user).username,
-        fullName: (await user).fullName,
         isVerified: (await user).isVerified,
-        phoneNumber: (await user).phoneNumber,
         StoreId: (await user).StoreId,
         role: (await user).role,
         point: (await user).point,
@@ -98,7 +96,7 @@ export default class AuthController {
         role: user.role,
         point: user.point,
         experience: user.exp,
-        image: user.imageUrl,
+        image: user.imageUrl ?? "",
       });
 
       await Token.create({

@@ -1,23 +1,28 @@
 import { Request, Response, NextFunction } from "express";
 import { Token } from "../models";
-import { JwtPayload } from "jsonwebtoken";
 import { jwtValue, verifyToken } from "../helpers/jwt";
 
-export const authentication = async (
+export default async function publicAuthentication(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
+): Promise<void> {
   try {
     const { access_token } = req.headers;
 
-    if (!access_token) throw { name: "invalid token" };
+    if (!access_token) {
+      req.user = null;
+      return next();
+    }
 
     const token = await Token.findOne({
       where: { access_token },
     });
 
-    if (!token) throw { name: "invalid token" };
+    if (!token) {
+      req.user = null;
+      return next();
+    }
 
     const payload: jwtValue = verifyToken(token.access_token);
 
@@ -44,8 +49,9 @@ export const authentication = async (
       experience,
       image,
     };
+
     next();
   } catch (err) {
     next(err);
   }
-};
+}

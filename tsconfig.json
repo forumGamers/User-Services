@@ -6,7 +6,13 @@
     "strict": true,
     "skipLibCheck": true,
     "removeComments": true,
-    "outDir": "build"
+    "outDir": "build",
+    "resolveJsonModule": true
   },
-  "include": ["src", "__test__", "config"]
+  "include": ["src", "__test__", "config", "src/types/*.d.ts"],
+  "extends": "ts-node/node16/tsconfig.json",
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  }
 }

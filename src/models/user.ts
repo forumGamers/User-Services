@@ -210,12 +210,13 @@ export default class User extends Model<UserAttributes, any> {
             user.password = hash(user.password);
           },
         },
-        indexes:[
+        indexes: [
           {
-            unique:true,
-            fields:['email']
-          }
-        ]
+            unique: true,
+            fields: ["email"],
+            type: "UNIQUE",
+          },
+        ],
       }
     );
   }

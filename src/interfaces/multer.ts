@@ -1,4 +1,4 @@
-export default interface file {
+export default interface file  {
   fieldname: string;
   originalname: string;
   encoding: string;
